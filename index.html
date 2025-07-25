@@ -10,10 +10,12 @@
 
   <div id="login">
     <h2>Bejelentkezés</h2>
-    <label>Név: <input type="text" id="name" /></label><br><br>
-    <label>Jelszó: <input type="password" id="password" />
-    <input type="checkbox" onclick="togglePassword()" /> mutasd
-    </label><br><br>
+    <label>Név: <input type="text" id="name" autocomplete="off"/></label><br><br>
+    <label>
+  Jelszó:
+  <input type="password" id="password" />
+  <span id="togglePw" style="cursor:pointer; margin-left: 8px;">👁️</span>
+</label>
     <button onclick="login()">Belépés</button>
     <p id="loginMsg" class="error"></p>
   </div>

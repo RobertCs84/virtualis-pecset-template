@@ -8,7 +8,8 @@ const checkpoints = [
   { id: 3, name: "Huszárokelőpuszta", lat: 47.3146701, lon: 17.6887561 },
   { id: 4, name: "Veszprém", lat: 47.1189646, lon: 17.9114044 },
   { id: 5, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564 },
-  { id: 6, name: "Alsóőrs", lat: 46.9854293, lon: 17.9743677 }
+  { id: 6, name: "Alsóőrs", lat: 46.9854293, lon: 17.9743677 },
+  { id: 7, name: "Csóka", lat: 47,4706375, lon: 19,0277570 }
  ];
 
 window.onload = function () {
@@ -125,7 +126,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-function togglePassword() {
-  const pw = document.getElementById("password");
-  pw.type = pw.type === "password" ? "text" : "password";
-}
+document.getElementById('togglePw').addEventListener('click', () => {
+  const pwField = document.getElementById('password');
+  pwField.type = pwField.type === 'password' ? 'text' : 'password';
+});
