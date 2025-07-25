@@ -67,6 +67,11 @@ function loadCheckpoints() {
     `;
     container.appendChild(div);
   });
+const allIds = checkpoints.map(p => p.id);
+const stampedIds = stampedPoints.map(p => p.id);
+const allStamped = allIds.every(id => stampedIds.includes(id));
+
+document.getElementById("pdfBtn").disabled = !allStamped;
 }
 
 function stamp(targetLat, targetLon, button, cpId, cpName) {
@@ -108,24 +113,6 @@ function saveStamp(id, name) {
   }
 }
 
-function exportData() {
-  const user = localStorage.getItem('loggedInUser');
-  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}');
-  const data = {
-    user,
-    checkpoints: stamps[user] || []
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${user.replace(' ', '_')}_pecsetek.json`;
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371000;
   const φ1 = lat1 * Math.PI / 180;
@@ -156,3 +143,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+function exportJSON() {
+  const user = localStorage.getItem('loggedInUser');
+  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}');
+  const data = {
+    user,
+    checkpoints: stamps[user] || []
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${user.replace(' ', '_')}_pecsetek.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportCSV() {
+  const user = localStorage.getItem('loggedInUser');
+  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}')[user] || [];
+
+  let csv = `Felhasználó,Név,Időbélyeg\n`;
+  stamps.forEach(p => {
+    csv += `${user},"${p.name}","${new Date(p.timestamp).toLocaleString()}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${user.replace(' ', '_')}_pecsetek.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function generatePDF() {
+  const user = localStorage.getItem('loggedInUser');
+  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}')[user] || [];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.text(`Teljesítési igazolás`, 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Túrázó neve: ${user}`, 20, 30);
+
+  let y = 40;
+  stamps.forEach((p, index) => {
+    const line = `${index + 1}. ${p.name} – ${new Date(p.timestamp).toLocaleString()}`;
+    doc.text(line, 20, y);
+    y += 10;
+  });
+
+  doc.save(`${user.replace(' ', '_')}_teljesites.pdf`);
+}
