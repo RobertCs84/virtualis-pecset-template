@@ -201,3 +201,41 @@ async function generatePDF() {
 
   doc.save(`${user.replace(' ', '_')}_teljesites.pdf`);
 }
+
+function importJSON() {
+  const fileInput = document.getElementById('importFile');
+  if (!fileInput.files.length) {
+    alert("Kérlek válassz ki egy JSON fájlt!");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    try {
+      const imported = JSON.parse(event.target.result);
+      const user = imported.user;
+      const checkpoints = imported.checkpoints;
+
+      if (!user || !Array.isArray(checkpoints)) {
+        alert("Érvénytelen formátum!");
+        return;
+      }
+
+      let currentData = JSON.parse(localStorage.getItem('stamps') || '{}');
+      currentData[user] = checkpoints;
+      localStorage.setItem('stamps', JSON.stringify(currentData));
+
+      // Ha a bejelentkezett felhasználóra töltöttük vissza:
+      const logged = localStorage.getItem('loggedInUser');
+      if (logged === user) {
+        loadCheckpoints();
+      }
+
+      alert("Sikeres visszatöltés!");
+    } catch (e) {
+      alert("Nem sikerült beolvasni a fájlt.");
+    }
+  };
+
+  reader.readAsText(fileInput.files[0]);
+}
