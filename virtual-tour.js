@@ -1,15 +1,13 @@
 const users = [
-  { name: "Don Joe", password: "30Vse12" }
+  { name: "Don Joe", password: "30Vse12" },
+  { name: "Kis Péter", password: "3_Stella!0" }
 ];
 
 const checkpoints = [
-  { id: 1, name: "Városlőd", lat: 47.1594727, lon: 17.6710794 },
-  { id: 2, name: "Odvaskő", lat: 47.283689, lon: 17.7061015 },
-  { id: 3, name: "Huszárokelőpuszta", lat: 47.3146701, lon: 17.6887561 },
-  { id: 4, name: "Veszprém", lat: 47.1189646, lon: 17.9114044 },
-  { id: 5, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564 },
-  { id: 6, name: "Alsóőrs", lat: 46.9854293, lon: 17.9743677 },
-  { id: 7, name: "Csóka utca", lat: 47.4706375, lon: 19.0277570 }
+  { id: 1, name: "Halmi-Ercsi kereszteződés", lat: 47.4704434, lon: 19.0309824 },
+  { id: 2, name: "Újbudai Sportcentrum - elektromos töltő", lat: 47.4673256, lon: 19.0318488 },  
+  { id: 3, name: "Fraknó-Keveháza kereszteződés", lat: 47.4679923, lon: 19.0263566 }, 
+  { id: 4, name: "Csóka utca", lat: 47.4706375, lon: 19.0277570 }
 ];
 
 window.onload = function () {
