@@ -42,19 +42,34 @@ function logout() {
 
 function loadCheckpoints() {
   const container = document.getElementById('checkpoints');
+  const user = localStorage.getItem('loggedInUser');
+  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}');
+  const stampedPoints = stamps[user] || [];
+
+  container.innerHTML = ''; // töröljük az előző tartalmat
+
   checkpoints.forEach(cp => {
     const div = document.createElement('div');
     div.className = 'checkpoint';
+
+    // Ellenőrizzük, hogy ez a pont már le van-e pecsételve
+    const match = stampedPoints.find(p => p.id === cp.id);
+    let stampStatus = '';
+    if (match) {
+      stampStatus = `<p class="success">✔️ Már lepecsételted: ${new Date(match.timestamp).toLocaleString()}</p>`;
+    }
+
     div.innerHTML = `
       <strong>${cp.name}</strong><br>
-      <button onclick="stamp(${cp.lat}, ${cp.lon}, this)">Pecsételés</button>
+      <button onclick="stamp(${cp.lat}, ${cp.lon}, this, ${cp.id}, '${cp.name}')">Pecsételés</button>
       <p class="status"></p>
+      ${stampStatus}
     `;
     container.appendChild(div);
   });
 }
 
-function stamp(targetLat, targetLon, button) {
+function stamp(targetLat, targetLon, button, cpId, cpName) {
   const statusP = button.nextElementSibling;
   if (!navigator.geolocation) {
     statusP.innerText = "A böngésző nem támogatja a helymeghatározást.";
@@ -67,10 +82,9 @@ function stamp(targetLat, targetLon, button) {
     const distance = getDistance(userLat, userLon, targetLat, targetLon);
 
     if (distance <= 100) {
-      const cpName = button.parentElement.querySelector('strong').innerText;
-      const cpId = checkpoints.find(p => p.name === cpName)?.id || null;
       statusP.innerHTML = `<span class="success">✔️ Pecsét sikeres (${Math.round(distance)} m)</span>`;
       saveStamp(cpId, cpName);
+      setTimeout(loadCheckpoints, 1000); // újratöltjük a listát frissített állapottal
     } else {
       statusP.innerHTML = `<span class="error">❌ Túl messze vagy a ponthoz (${Math.round(distance)} m)</span>`;
     }
