@@ -11,7 +11,9 @@
   <div id="login">
     <h2>Bejelentkezés</h2>
     <label>Név: <input type="text" id="name" /></label><br><br>
-    <label>Jelszó: <input type="password" id="password" /></label><br><br>
+    <label>Jelszó: <input type="password" id="password" />
+    <input type="checkbox" onclick="togglePassword()" /> mutasd
+    </label><br><br>
     <button onclick="login()">Belépés</button>
     <p id="loginMsg" class="error"></p>
   </div>
@@ -28,6 +30,10 @@
 
     <h3>Ellenőrzőpontok</h3>
     <div id="checkpoints"></div>
+    
+    <h3>Pecsét adatok mentése</h3>
+<button onclick="exportData()">Letöltés JSON fájlban</button>
+
   </div>
 
   <script src="virtual-tour.js"></script>

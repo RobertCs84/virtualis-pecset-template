@@ -66,13 +66,49 @@ function stamp(targetLat, targetLon, button) {
     const distance = getDistance(userLat, userLon, targetLat, targetLon);
 
     if (distance <= 100) {
+      const cpName = button.parentElement.querySelector('strong').innerText;
+      const cpId = checkpoints.find(p => p.name === cpName)?.id || null;
       statusP.innerHTML = `<span class="success">✔️ Pecsét sikeres (${Math.round(distance)} m)</span>`;
+      saveStamp(cpId, cpName);
     } else {
       statusP.innerHTML = `<span class="error">❌ Túl messze vagy a ponthoz (${Math.round(distance)} m)</span>`;
     }
   }, err => {
     statusP.innerText = "Nem sikerült lekérni a pozíciót.";
   });
+}
+
+function saveStamp(id, name) {
+  const user = localStorage.getItem('loggedInUser');
+  const now = new Date().toISOString();
+  let data = JSON.parse(localStorage.getItem('stamps') || '{}');
+
+  if (!data[user]) data[user] = [];
+
+  // Ne duplikáljunk
+  const alreadyStamped = data[user].some(p => p.id === id);
+  if (!alreadyStamped) {
+    data[user].push({ id, name, timestamp: now });
+    localStorage.setItem('stamps', JSON.stringify(data));
+  }
+}
+
+function exportData() {
+  const user = localStorage.getItem('loggedInUser');
+  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}');
+  const data = {
+    user,
+    checkpoints: stamps[user] || []
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${user.replace(' ', '_')}_pecsetek.json`;
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -87,4 +123,9 @@ function getDistance(lat1, lon1, lat2, lon2) {
             Math.sin(Δλ / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
+}
+
+function togglePassword() {
+  const pw = document.getElementById("password");
+  pw.type = pw.type === "password" ? "text" : "password";
 }
