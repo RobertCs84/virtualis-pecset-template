@@ -1,13 +1,21 @@
 const users = [
-  { name: "Don Joe", password: "30Vse12" },
-  { name: "Kis Péter", password: "3_Stella!0" }
+  { name: "Don Joe", password: "30Vse12" }
 ];
 
 const checkpoints = [
-  { id: 1, name: "Halmi-Ercsi kereszteződés", lat: 47.4704434, lon: 19.0309824 },
-  { id: 2, name: "Újbudai Sportcentrum - elektromos töltő", lat: 47.4673256, lon: 19.0318488 },  
-  { id: 3, name: "Fraknó-Keveháza kereszteződés", lat: 47.4679923, lon: 19.0263566 }, 
-  { id: 4, name: "Csóka utca", lat: 47.4706375, lon: 19.0277570 }
+{ id: 1, name: "Városlőd", lat: 47.1594727, lon: 17.6710794, route: "Bakony" },
+{ id: 2, name: "Szénpajtai-pihenő", lat: 47.1946432, lon: 17.6685077, route: "Bakony" },
+{ id: 3, name: "Királykapu (fűtőház)", lat: 47.2561136, lon: 17.6626225, route: "Bakony" },
+{ id: 4, name: "Természetvédelmi tábla", lat: 47.2836890, lon: 17.7061015, route: "Bakony" },
+{ id: 5, name: "Huszárokelőpuszta (esőbeálló)", lat: 47.3146886, lon: 17.6886906, route: "Bakony" },
+{ id: 6, name: "Veszprém vasútállomás", lat: 47.1189646, lon: 17.9114044, route: "Balaton" },
+{ id: 7, name: "Haszkovó – Őrház utca", lat: 47.1036732, lon: 17.9201985, route: "Balaton" },
+{ id: 8, name: "Veszprém régi vasútállomás", lat: 47.0950814, lon: 17.9175577, route: "Balaton" },
+{ id: 9, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564, route: "Balaton" },
+{ id: 10, name: "Vödörvölgy – Zöld étterem", lat: 47.0362092, lon: 17.9799228, route: "Balaton" },
+{ id: 11, name: "Töltés utca – 375-ös gőzmozdony", lat: 47.0300097, lon: 18.0080322, route: "Balaton" },
+{ id: 12, name: "Káptalanfüred állomás", lat: 47.0103427, lon: 18.0041360, route: "Balaton" },
+{ id: 13, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" },
 ];
 
 window.onload = function () {
@@ -39,18 +47,20 @@ function logout() {
 }
 
 function loadCheckpoints() {
-  const container = document.getElementById('checkpoints');
   const user = localStorage.getItem('loggedInUser');
   const stamps = JSON.parse(localStorage.getItem('stamps') || '{}');
   const stampedPoints = stamps[user] || [];
 
-  container.innerHTML = ''; // töröljük az előző tartalmat
+  const bakonyDiv = document.getElementById('bakonyPoints');
+  const balatonDiv = document.getElementById('balatonPoints');
+
+  bakonyDiv.innerHTML = '';
+  balatonDiv.innerHTML = '';
 
   checkpoints.forEach(cp => {
     const div = document.createElement('div');
     div.className = 'checkpoint';
 
-    // Ellenőrizzük, hogy ez a pont már le van-e pecsételve
     const match = stampedPoints.find(p => p.id === cp.id);
     let stampStatus = '';
     if (match) {
@@ -63,13 +73,19 @@ function loadCheckpoints() {
       <p class="status"></p>
       ${stampStatus}
     `;
-    container.appendChild(div);
-  });
-const allIds = checkpoints.map(p => p.id);
-const stampedIds = stampedPoints.map(p => p.id);
-const allStamped = allIds.every(id => stampedIds.includes(id));
 
-document.getElementById("pdfBtn").disabled = !allStamped;
+    if (cp.route === "Bakony") {
+      bakonyDiv.appendChild(div);
+    } else if (cp.route === "Balaton") {
+      balatonDiv.appendChild(div);
+    }
+  });
+
+  const allIds = checkpoints.map(p => p.id);
+  const stampedIds = stampedPoints.map(p => p.id);
+  const allStamped = allIds.every(id => stampedIds.includes(id));
+
+  document.getElementById("pdfBtn").disabled = !allStamped;
 }
 
 function stamp(targetLat, targetLon, button, cpId, cpName) {
