@@ -50,19 +50,6 @@ window.onload = function () {
   }
 };
 
-function login() {
-  const name = document.getElementById('name').value.trim();
-  const pass = document.getElementById('password').value;
-  const user = users.find(u => u.name === name && u.password === pass);
-
-  if (user) {
-    localStorage.setItem('loggedInUser', user.name);
-    location.reload();
-  } else {
-    document.getElementById('loginMsg').innerText = "Hibás név vagy jelszó!";
-  }
-}
-
 function logout() {
   localStorage.removeItem('loggedInUser');
   location.reload();
@@ -163,23 +150,22 @@ function getDistance(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-document.getElementById("togglePw").addEventListener("click", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const togglePw = document.getElementById("togglePw");
   const pwField = document.getElementById("password");
-  const isHidden = pwField.type === "password";
-  pwField.type = isHidden ? "text" : "password";
-});
 
   if (togglePw && pwField) {
     togglePw.addEventListener("click", () => {
       if (pwField.type === "password") {
         pwField.type = "text";
-        togglePw.innerText = "🙈"; // szem becsukva
+        togglePw.textContent = "🙈";
       } else {
         pwField.type = "password";
-        togglePw.innerText = "👁️"; // szem nyitva
+        togglePw.textContent = "👁️";
       }
     });
   }
+});
 
 
 function exportJSON() {
