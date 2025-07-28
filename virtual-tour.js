@@ -19,7 +19,7 @@ async function login() {
     if (validUser) {
       localStorage.setItem("loggedInUser", name);
       document.getElementById("login").style.display = "none";
-      document.getElementById("tour").style.display = "block";
+      document.getElementById("mainContent").style.display = "block";
       document.getElementById("usernameDisplay").textContent = name;
       loadCheckpoints();
     } else {
@@ -49,7 +49,7 @@ const checkpoints = [
 
 document.addEventListener("DOMContentLoaded", () => {
   const loginEl = document.getElementById('login');
-  const tourEl = document.getElementById('tour');
+  const tourEl = document.getElementById('mainContent');
   const userSpan = document.getElementById('usernameDisplay');
 
   const logged = localStorage.getItem('loggedInUser');
