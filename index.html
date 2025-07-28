@@ -9,7 +9,7 @@
 </head>
 <body>
 
-  <div id="loginForm">
+  <div id="login">
     <h2>Bejelentkezés</h2>
     <form onsubmit="event.preventDefault(); login();"> 
 
@@ -18,12 +18,12 @@
         <input type="text" id="name" autocomplete="off" required />
       </label><br><br>
 
-     <label>
-  Jelszó:
-  <input type="password" id="password" required />
-  <span id="togglePw" style="cursor:pointer;">👁️</span>
-</label>
-<br><br>
+      <label>
+        Jelszó:
+        <input type="password" id="password" required />
+        <span id="togglePw" style="cursor:pointer;">👁️</span>
+      </label>
+      <br><br>
 
       <button type="submit">Belépés</button>
       <p id="loginMsg" class="error"></p>
@@ -59,12 +59,5 @@
   </div>
 
   <script src="virtual-tour.js" defer></script>
-  <script>
-    // jelszó megjelenítés logika
-    document.getElementById("togglePw").addEventListener("click", function () {
-      const pwField = document.getElementById("password");
-      pwField.type = pwField.type === "password" ? "text" : "password";
-    });
-  </script>
 </body>
 </html>

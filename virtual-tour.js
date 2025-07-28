@@ -1,6 +1,14 @@
 async function login() {
-  const name = document.getElementById("name").value.trim();
-  const password = document.getElementById("password").value.trim();
+  const nameField = document.getElementById("name");
+  const passwordField = document.getElementById("password");
+
+  if (!nameField || !passwordField) {
+    console.error("Hiányzik a beviteli mező (name vagy password)");
+    return;
+  }
+
+  const name = nameField.value.trim();
+  const password = passwordField.value.trim();
 
   try {
     const response = await fetch("https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec");
@@ -23,21 +31,20 @@ async function login() {
   }
 }
 
-
 const checkpoints = [
-{ id: 1, name: "Városlőd", lat: 47.1594727, lon: 17.6710794, route: "Bakony" },
-{ id: 2, name: "Szénpajtai-pihenő", lat: 47.1946432, lon: 17.6685077, route: "Bakony" },
-{ id: 3, name: "Királykapu (fűtőház)", lat: 47.2561136, lon: 17.6626225, route: "Bakony" },
-{ id: 4, name: "Természetvédelmi tábla", lat: 47.2836890, lon: 17.7061015, route: "Bakony" },
-{ id: 5, name: "Huszárokelőpuszta (esőbeálló)", lat: 47.3146886, lon: 17.6886906, route: "Bakony" },
-{ id: 6, name: "Veszprém vasútállomás", lat: 47.1189646, lon: 17.9114044, route: "Balaton" },
-{ id: 7, name: "Haszkovó – Őrház utca", lat: 47.1036732, lon: 17.9201985, route: "Balaton" },
-{ id: 8, name: "Veszprém régi vasútállomás", lat: 47.0950814, lon: 17.9175577, route: "Balaton" },
-{ id: 9, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564, route: "Balaton" },
-{ id: 10, name: "Vödörvölgy – Zöld étterem", lat: 47.0362092, lon: 17.9799228, route: "Balaton" },
-{ id: 11, name: "Töltés utca – 375-ös gőzmozdony", lat: 47.0300097, lon: 18.0080322, route: "Balaton" },
-{ id: 12, name: "Káptalanfüred állomás", lat: 47.0103427, lon: 18.0041360, route: "Balaton" },
-{ id: 13, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" },
+  { id: 1, name: "Városlőd", lat: 47.1594727, lon: 17.6710794, route: "Bakony" },
+  { id: 2, name: "Szénpajtai-pihenő", lat:  47.1946432, lon: 17.6685077, route: "Bakony" },
+  { id: 3, name: "Királykapu (fűtőház)", lat: 47.2561136, lon: 17.6626225, route: "Bakony" },
+  { id: 4, name: "Természetvédelmi tábla", lat: 47.2836890, lon: 17.7061015, route: "Bakony" },
+  { id: 5, name: "Huszárokelőpuszta (esőbeálló)", lat: 47.3146886, lon: 17.6886906, route: "Bakony" },
+  { id: 6, name: "Veszprém vasútállomás", lat: 47.1189646, lon: 17.9114044, route: "Balaton" },
+  { id: 7, name: "Haszkovó – Őrház utca", lat: 47.1036732, lon: 17.9201985, route: "Balaton" },
+  { id: 8, name: "Veszprém régi vasútállomás", lat: 47.0950814, lon: 17.9175577, route: "Balaton" },
+  { id: 9, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564, route: "Balaton" },
+  { id: 10, name: "Vödörvölgy – Zöld étterem", lat: 47.0362092, lon: 17.9799228, route: "Balaton" },
+  { id: 11, name: "Töltés utca – 375-ös gőzmozdony", lat: 47.0300097, lon: 18.0080322, route: "Balaton" },
+  { id: 12, name: "Káptalanfüred állomás", lat: 47.0103427, lon: 18.0041360, route: "Balaton" },
+  { id: 13, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" },
 ];
 
 window.onload = function () {
@@ -85,7 +92,7 @@ function loadCheckpoints() {
 
     if (cp.route === "Bakony") {
       bakonyDiv.appendChild(div);
-    } else if (cp.route === "Balaton") {
+    } else {
       balatonDiv.appendChild(div);
     }
   });
@@ -112,7 +119,7 @@ function stamp(targetLat, targetLon, button, cpId, cpName) {
     if (distance <= 100) {
       statusP.innerHTML = `<span class="success">✔️ Pecsét sikeres (${Math.round(distance)} m)</span>`;
       saveStamp(cpId, cpName);
-      setTimeout(loadCheckpoints, 1000); // újratöltjük a listát frissített állapottal
+      setTimeout(loadCheckpoints, 1000);
     } else {
       statusP.innerHTML = `<span class="error">❌ Túl messze vagy a ponthoz (${Math.round(distance)} m)</span>`;
     }
@@ -128,7 +135,6 @@ function saveStamp(id, name) {
 
   if (!data[user]) data[user] = [];
 
-  // Ne duplikáljunk
   const alreadyStamped = data[user].some(p => p.id === id);
   if (!alreadyStamped) {
     data[user].push({ id, name, timestamp: now });
@@ -166,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
 
 function exportJSON() {
   const user = localStorage.getItem('loggedInUser');
@@ -249,7 +254,6 @@ function importJSON() {
       currentData[user] = checkpoints;
       localStorage.setItem('stamps', JSON.stringify(currentData));
 
-      // Ha a bejelentkezett felhasználóra töltöttük vissza:
       const logged = localStorage.getItem('loggedInUser');
       if (logged === user) {
         loadCheckpoints();
