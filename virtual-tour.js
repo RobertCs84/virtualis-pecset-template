@@ -162,9 +162,11 @@ function getDistance(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const togglePw = document.getElementById("togglePw");
+document.getElementById("togglePw").addEventListener("click", function () {
   const pwField = document.getElementById("password");
+  const isHidden = pwField.type === "password";
+  pwField.type = isHidden ? "text" : "password";
+});
 
   if (togglePw && pwField) {
     togglePw.addEventListener("click", () => {
