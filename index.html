@@ -2,26 +2,33 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Virtuális Túra Pecsételő</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-  <div id="login">
+  <div id="loginForm">
     <h2>Bejelentkezés</h2>
-    <label>Név: <input type="text" id="name" autocomplete="off"/></label><br><br>
-    <label>
-  Jelszó:
-  <input type="password" id="password" />
-  <span id="togglePw" style="cursor:pointer;">👁️</span>
-</label><br><br> 
-    <button onclick="login()">Belépés</button>
-    <p id="loginMsg" class="error"></p>
+    <form onsubmit="event.preventDefault(); login();">
+      <label>
+        Név:
+        <input type="text" id="name" autocomplete="off" required />
+      </label><br><br>
+
+      <label>
+        Jelszó:
+        <input type="password" id="password" required />
+        <span id="togglePw" style="cursor:pointer;">👁️</span>
+      </label><br><br>
+
+      <button type="submit">Belépés</button>
+      <p id="loginMsg" class="error"></p>
+    </form>
   </div>
 
-  <div id="tour" class="hidden">
+  <div id="mainContent" class="hidden">
     <h2>Üdv, <span id="usernameDisplay"></span>!</h2>
     <button onclick="logout()">Kijelentkezés</button>
 
@@ -32,26 +39,30 @@
     </ul>
 
     <h3>Ellenőrzőpontok</h3>
-    <div id="checkpoints"></div>
 
-<h2>Franciavágás-Városlőd (Bakonyi Erdei Kisvasút)</h2>
-<div id="bakonyPoints"></div>
+    <h4>Franciavágás–Városlőd (Bakonyi Erdei Kisvasút)</h4>
+    <div id="bakonyPoints"></div>
 
-<h2>Alsóörs-Veszprém (Balaton-felvidéki Vasút)</h2>
-<div id="balatonPoints"></div>
-    
-    
+    <h4>Alsóörs–Veszprém (Balaton-felvidéki Vasút)</h4>
+    <div id="balatonPoints"></div>
+
     <h3>Adatok mentése</h3>
-<button onclick="exportJSON()">Megszerzett pecsétek letöltése</button>
-<button onclick="exportCSV()">Letöltés CSV fájlban</button>
-<button onclick="generatePDF()" id="pdfBtn" disabled>Teljesítésigazolás letöltése PDF formátumban</button>
+    <button onclick="exportJSON()">Megszerzett pecsétek letöltése</button>
+    <button onclick="exportCSV()">Letöltés CSV fájlban</button>
+    <button onclick="generatePDF()" id="pdfBtn" disabled>Teljesítésigazolás letöltése PDF formátumban</button>
 
-<h3>Megszerzett pecsétek adatainak visszatöltése</h3>
-<input type="file" id="importFile" accept=".json" />
-<button onclick="importJSON()">Visszatöltés</button>
-    
+    <h3>Adatok visszatöltése</h3>
+    <input type="file" id="importFile" accept=".json" />
+    <button onclick="importJSON()">Visszatöltés</button>
   </div>
 
   <script src="virtual-tour.js"></script>
+  <script>
+    // jelszó megjelenítés logika
+    document.getElementById("togglePw").addEventListener("click", function () {
+      const pwField = document.getElementById("password");
+      pwField.type = pwField.type === "password" ? "text" : "password";
+    });
+  </script>
 </body>
 </html>
