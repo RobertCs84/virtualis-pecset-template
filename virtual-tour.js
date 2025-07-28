@@ -10,8 +10,8 @@ async function login() {
 
     if (validUser) {
       localStorage.setItem("loggedInUser", name);
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("mainContent").style.display = "block";
+      document.getElementById("login").style.display = "none";
+      document.getElementById("tour").style.display = "block";
       document.getElementById("usernameDisplay").textContent = name;
       loadCheckpoints();
     } else {
@@ -22,6 +22,7 @@ async function login() {
     console.error("Login error:", error);
   }
 }
+
 
 const checkpoints = [
 { id: 1, name: "Városlőd", lat: 47.1594727, lon: 17.6710794, route: "Bakony" },
@@ -179,7 +180,7 @@ document.getElementById("togglePw").addEventListener("click", function () {
       }
     });
   }
-});
+
 
 function exportJSON() {
   const user = localStorage.getItem('loggedInUser');
