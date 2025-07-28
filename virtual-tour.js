@@ -9,6 +9,9 @@ async function login() {
 
   const name = nameField.value.trim();
   const password = passwordField.value.trim();
+  
+  document.getElementById("loginMsg").textContent = "Ellenőrzés folyamatban...";
+
 
   try {
     const response = await fetch("https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec");
@@ -17,12 +20,14 @@ async function login() {
     const validUser = users.find(user => user.name === name && user.password === password);
 
     if (validUser) {
+    	document.getElementById("loginMsg").textContent = "";
       localStorage.setItem("loggedInUser", name);
       document.getElementById("login").style.display = "none";
       document.getElementById("mainContent").style.display = "block";
       document.getElementById("usernameDisplay").textContent = name;
       loadCheckpoints();
     } else {
+    	document.getElementById("loginMsg").textContent = "";
       document.getElementById("loginMsg").textContent = "Hibás felhasználónév vagy jelszó!";
     }
   } catch (error) {
