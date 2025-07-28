@@ -11,7 +11,8 @@
 
   <div id="loginForm">
     <h2>Bejelentkezés</h2>
-    <form onsubmit="event.preventDefault(); login();">
+    <form onsubmit="event.preventDefault(); login();"> 
+
       <label>
         Név:
         <input type="text" id="name" autocomplete="off" required />
@@ -57,7 +58,7 @@
     <button onclick="importJSON()">Visszatöltés</button>
   </div>
 
-  <script src="virtual-tour.js"></script>
+  <script src="virtual-tour.js" defer></script>
   <script>
     // jelszó megjelenítés logika
     document.getElementById("togglePw").addEventListener("click", function () {
