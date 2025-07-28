@@ -47,15 +47,33 @@ const checkpoints = [
   { id: 13, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" },
 ];
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const loginEl = document.getElementById('login');
+  const tourEl = document.getElementById('tour');
+  const userSpan = document.getElementById('usernameDisplay');
+
   const logged = localStorage.getItem('loggedInUser');
   if (logged) {
-    document.getElementById('login').classList.add('hidden');
-    document.getElementById('tour').classList.remove('hidden');
-    document.getElementById('usernameDisplay').innerText = logged;
+    if (loginEl) loginEl.classList.add('hidden');
+    if (tourEl) tourEl.classList.remove('hidden');
+    if (userSpan) userSpan.innerText = logged;
     loadCheckpoints();
   }
-};
+
+  const pwField = document.getElementById("password");
+  const togglePw = document.getElementById("togglePw");
+  if (togglePw && pwField) {
+    togglePw.addEventListener("click", () => {
+      if (pwField.type === "password") {
+        pwField.type = "text";
+        togglePw.innerText = "🙈"; // szem becsukva
+      } else {
+        pwField.type = "password";
+        togglePw.innerText = "👁️"; // szem nyitva
+      }
+    });
+  }
+});
 
 function logout() {
   localStorage.removeItem('loggedInUser');
@@ -155,23 +173,6 @@ function getDistance(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const togglePw = document.getElementById("togglePw");
-  const pwField = document.getElementById("password");
-
-  if (togglePw && pwField) {
-    togglePw.addEventListener("click", () => {
-      if (pwField.type === "password") {
-        pwField.type = "text";
-        togglePw.textContent = "🙈";
-      } else {
-        pwField.type = "password";
-        togglePw.textContent = "👁️";
-      }
-    });
-  }
-});
 
 function exportJSON() {
   const user = localStorage.getItem('loggedInUser');
