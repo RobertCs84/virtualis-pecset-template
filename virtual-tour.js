@@ -2,18 +2,24 @@ async function login() {
   const name = document.getElementById("name").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  const response = await fetch("https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec");
-  const users = await response.json();
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec");
+    const users = await response.json();
 
-  const validUser = users.find(user => user.name === name && user.password === password);
+    const validUser = users.find(user => user.name === name && user.password === password);
 
-  if (validUser) {
-    localStorage.setItem("loggedInUser", name);
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-    loadCheckpoints();
-  } else {
-    alert("Hibás felhasználónév vagy jelszó!");
+    if (validUser) {
+      localStorage.setItem("loggedInUser", name);
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+      document.getElementById("usernameDisplay").textContent = name;
+      loadCheckpoints();
+    } else {
+      document.getElementById("loginMsg").textContent = "Hibás felhasználónév vagy jelszó!";
+    }
+  } catch (error) {
+    document.getElementById("loginMsg").textContent = "Hiba történt a bejelentkezés során.";
+    console.error("Login error:", error);
   }
 }
 
