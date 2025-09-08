@@ -1,37 +1,50 @@
+// A Google Apps Script URL-je, amit közzétett a "Web app" módban.
+// Cserélje le erre a saját URL-jére!
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec";
+
 async function login() {
   const nameField = document.getElementById("name");
   const passwordField = document.getElementById("password");
+  const loginMsg = document.getElementById("loginMsg");
 
-  if (!nameField || !passwordField) {
-    console.error("Hiányzik a beviteli mező (name vagy password)");
+  if (!nameField || !passwordField || !loginMsg) {
+    console.error("Hiányzik a beviteli mező (name, password) vagy a loginMsg elem.");
     return;
   }
 
   const name = nameField.value.trim();
   const password = passwordField.value.trim();
   
-  document.getElementById("loginMsg").textContent = "Ellenőrzés folyamatban...";
-
+  loginMsg.textContent = "Ellenőrzés folyamatban...";
 
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec");
-    const users = await response.json();
+    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: 'login',
+        username: name,
+        password: password
+      })
+    });
 
-    const validUser = users.find(user => user.name === name && user.password === password);
+    const result = await response.json();
 
-    if (validUser) {
-    	document.getElementById("loginMsg").textContent = "";
+    if (result.success) {
+      loginMsg.textContent = "";
       localStorage.setItem("loggedInUser", name);
+      localStorage.setItem("authToken", result.token); // Token tárolása
       document.getElementById("login").style.display = "none";
       document.getElementById("mainContent").style.display = "block";
       document.getElementById("usernameDisplay").textContent = name;
       loadCheckpoints();
     } else {
-    	document.getElementById("loginMsg").textContent = "";
-      document.getElementById("loginMsg").textContent = "Hibás felhasználónév vagy jelszó!";
+      loginMsg.textContent = result.message || "Hibás felhasználónév vagy jelszó!";
     }
   } catch (error) {
-    document.getElementById("loginMsg").textContent = "Hiba történt a bejelentkezés során.";
+    loginMsg.textContent = "Hiba történt a bejelentkezés során.";
     console.error("Login error:", error);
   }
 }
@@ -53,17 +66,8 @@ const checkpoints = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  const loginEl = document.getElementById('login');
-  const tourEl = document.getElementById('mainContent');
-  const userSpan = document.getElementById('usernameDisplay');
-
-  const logged = localStorage.getItem('loggedInUser');
-  if (logged) {
-    if (loginEl) loginEl.classList.add('hidden');
-    if (tourEl) tourEl.classList.remove('hidden');
-    if (userSpan) userSpan.innerText = logged;
-    loadCheckpoints();
-  }
+  // A DOM betöltése után ellenőrizzük a hitelesítést
+  checkAuthAndLoad();
 
   const pwField = document.getElementById("password");
   const togglePw = document.getElementById("togglePw");
@@ -80,8 +84,51 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+async function checkAuthAndLoad() {
+  const loginEl = document.getElementById('login');
+  const tourEl = document.getElementById('mainContent');
+  const userSpan = document.getElementById('usernameDisplay');
+  const authToken = localStorage.getItem('authToken');
+  const loggedUser = localStorage.getItem('loggedInUser');
+
+  if (authToken && loggedUser) {
+    try {
+      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'checkAuth',
+          token: authToken
+        })
+      });
+      const result = await response.json();
+
+      if (result.success && result.username === loggedUser) {
+        // A token érvényes, és a felhasználónév megegyezik
+        if (loginEl) loginEl.classList.add('hidden');
+        if (tourEl) tourEl.classList.remove('hidden');
+        if (userSpan) userSpan.innerText = loggedUser;
+        loadCheckpoints();
+      } else {
+        // Token érvénytelen vagy nem egyezik a felhasználónévvel
+        logout(); // Kijelentkeztetés
+      }
+    } catch (error) {
+      console.error("Token ellenőrzési hiba:", error);
+      logout(); // Hiba esetén kijelentkeztetés
+    }
+  } else {
+    // Nincs token vagy felhasználó, marad a bejelentkezési oldalon
+    if (loginEl) loginEl.classList.remove('hidden');
+    if (tourEl) tourEl.classList.add('hidden');
+  }
+}
+
 function logout() {
   localStorage.removeItem('loggedInUser');
+  localStorage.removeItem('authToken'); // Token törlése
   location.reload();
 }
 
@@ -139,15 +186,16 @@ function stamp(targetLat, targetLon, button, cpId, cpName) {
     const userLon = pos.coords.longitude;
     const distance = getDistance(userLat, userLon, targetLat, targetLon);
 
-    if (distance <= 100) {
+    if (distance <= 100) { // 100 méteres sugarú körben
       statusP.innerHTML = `<span class="success">✔️ Pecsét sikeres (${Math.round(distance)} m)</span>`;
       saveStamp(cpId, cpName);
-      setTimeout(loadCheckpoints, 1000);
+      setTimeout(loadCheckpoints, 1000); // Újratöltés a mentés után
     } else {
       statusP.innerHTML = `<span class="error">❌ Túl messze vagy a ponthoz (${Math.round(distance)} m)</span>`;
     }
   }, err => {
     statusP.innerText = "Nem sikerült lekérni a pozíciót.";
+    console.error("Geolocation error:", err);
   });
 }
 
@@ -166,7 +214,7 @@ function saveStamp(id, name) {
 }
 
 function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371000;
+  const R = 6371000; // Föld sugara méterben
   const φ1 = lat1 * Math.PI / 180;
   const φ2 = lat2 * Math.PI / 180;
   const Δφ = (lat2 - lat1) * Math.PI / 180;
@@ -239,8 +287,17 @@ async function generatePDF() {
 
 function importJSON() {
   const fileInput = document.getElementById('importFile');
+  // Helyettesítsük az alert-et egy egyszerű üzenetdobozzal
+  const showMessage = (msg) => {
+    const loginMsg = document.getElementById("loginMsg");
+    if (loginMsg) {
+      loginMsg.textContent = msg;
+      setTimeout(() => loginMsg.textContent = "", 3000); // Üzenet elrejtése 3 másodperc után
+    }
+  };
+
   if (!fileInput.files.length) {
-    alert("Kérlek válassz ki egy JSON fájlt!");
+    showMessage("Kérlek válassz ki egy JSON fájlt!");
     return;
   }
 
@@ -252,7 +309,7 @@ function importJSON() {
       const checkpoints = imported.checkpoints;
 
       if (!user || !Array.isArray(checkpoints)) {
-        alert("Érvénytelen formátum!");
+        showMessage("Érvénytelen formátum!");
         return;
       }
 
@@ -265,9 +322,10 @@ function importJSON() {
         loadCheckpoints();
       }
 
-      alert("Sikeres visszatöltés!");
+      showMessage("Sikeres visszatöltés!");
     } catch (e) {
-      alert("Nem sikerült beolvasni a fájlt.");
+      showMessage("Nem sikerült beolvasni a fájlt.");
+      console.error("Import JSON error:", e);
     }
   };
 
