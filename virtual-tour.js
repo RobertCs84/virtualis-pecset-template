@@ -1,6 +1,6 @@
 // A Google Apps Script URL-je, amit közzétett a "Web app" módban.
 // Cserélje le erre a saját URL-jére!
-const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiso5Qg5qy8JQj7PvkblLLDFfuM_XzZVtKPkNZBSWQJr_BBx7l7W5s_YEZ_etfZoN4zQ/exec";
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7DMe3yx4S1mfRvUGTTeBJYoTODgB6_QYchTKh_25gwrk1vdDjp1CrX7JWNvUvSkCb/exec";
 
 async function login() {
   const nameField = document.getElementById("name");
