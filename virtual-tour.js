@@ -1,5 +1,5 @@
 // Ide illessze be a Google Apps Script webalkalmazás URL-jét, miután telepítette.
-const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7DMe3yx4S1mfRvUGTTeBJYoTODgB6_QYchTKh_25gwrk1vdDjp1CrX7JWNvUvSkCb/exec";
+const GOOGLE_APPS_SCRIPT_URL = "IDE_ILLASSZA_BE_AZ_ON_URL-JÉT";
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthAndLoad();
@@ -44,6 +44,7 @@ async function login() {
         if (result.success) {
             document.getElementById("loginMsg").textContent = "";
             localStorage.setItem("loggedInToken", result.token);
+            localStorage.setItem("username", result.username); // A felhasználónevet is tároljuk a későbbi használathoz
             document.getElementById("login").classList.add("hidden");
             document.getElementById("mainContent").classList.remove("hidden");
             document.getElementById("usernameDisplay").textContent = result.username;
@@ -98,6 +99,7 @@ async function checkAuthAndLoad() {
 
 function logout() {
     localStorage.removeItem("loggedInToken");
+    localStorage.removeItem("username");
     document.getElementById("login").classList.remove("hidden");
     document.getElementById("mainContent").classList.add("hidden");
     document.getElementById("name").value = "";
@@ -106,68 +108,20 @@ function logout() {
     document.getElementById("balatonPoints").innerHTML = "";
 }
 
-// A többi funkció (loadCheckpoints, stamp, export, etc.)
-// továbbra is használja a tokent az ellenőrzéshez.
-// Ezt a loadCheckpoints függvényen keresztül mutatjuk be.
-async function loadCheckpoints() {
-    const token = localStorage.getItem("loggedInToken");
-    if (!token) return;
-
-    try {
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                action: 'getCheckpoints', // új akció az ellenőrzőpontok lekérdezéséhez
-                token: token
-            })
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            const username = result.username;
-            const checkpoints = result.checkpoints || {}; // Feltételezve, hogy a szerver adja vissza a pecséteket
-            
-            // Jelenlegi pecsétek betöltése
-            renderCheckpoints(username, checkpoints);
-        } else {
-            console.error("Hiba a pecsétek lekérdezésekor:", result.message);
-            // Kezeljük a hibát (pl. kijelentkezés)
-            logout();
-        }
-    } catch (error) {
-        console.error("Hiba a pecsétek lekérdezésekor:", error);
-        logout();
-    }
-
-    // --- A megmaradó `virtual-tour.js` kód ide jön, de a GPX fájlok URL-jei megmaradnak ---
-    // A renderCheckpoints, stamp, exportJSON és exportCSV függvények változatlanok
-    // a lokális tárolást használó eredeti logikával.
-
-    // Megjegyzés: A "stamp" és a "getCheckpoints" funkciókat is módosítani
-    // kellene, hogy kommunikáljanak a Google Apps Script-tel a lokális
-    // tárolás helyett, ha a pecséteket is a szerveren szeretné tárolni.
-    // Ezt a jelenlegi verzió nem tartalmazza, csak a bejelentkezési logikát.
-}
-
-// A lenti kódrészletek megegyeznek az eredeti kóddal.
-// Ide másolja be az eredeti 'virtual-tour.js' fájl fennmaradó tartalmát,
-// a 'login' függvény kivételével.
-
-function renderCheckpoints(username, savedStamps) {
+function loadCheckpoints() {
+    const username = localStorage.getItem("username");
     const checkpoints = {
         'bakony': ['Fenyőfő', 'Pénzesgyőr', 'Porva-Csesznek', 'Borzavár', 'Zirc'],
         'balaton': ['Alsóörs', 'Felsőörs', 'Lovas', 'Paloznak', 'Csopak']
     };
 
+    const savedStamps = JSON.parse(localStorage.getItem('stamps') || '{}')[username] || [];
+
     function renderSection(sectionId, sectionName) {
         const container = document.getElementById(sectionId);
         container.innerHTML = '';
         checkpoints[sectionName].forEach(p => {
-            const hasStamp = savedStamps && savedStamps.includes(p);
+            const hasStamp = savedStamps.some(s => s.name === p);
             const stampButton = `<button onclick="stamp('${p}')" ${hasStamp ? 'disabled' : ''}>Pecsételés</button>`;
             const statusClass = hasStamp ? 'success' : 'error';
             const statusText = hasStamp ? 'Pecsételve' : 'Nincs pecsét';
@@ -185,7 +139,7 @@ function renderCheckpoints(username, savedStamps) {
 }
 
 function stamp(pointName) {
-    const username = localStorage.getItem("loggedInToken"); // Token használata a felhasználó azonosítására
+    const username = localStorage.getItem("username");
     if (!username) {
         alert("Nincs bejelentkezett felhasználó!");
         return;
@@ -212,7 +166,7 @@ function stamp(pointName) {
 }
 
 function exportJSON() {
-    const user = localStorage.getItem("loggedInToken");
+    const user = localStorage.getItem("username");
     const stamps = JSON.parse(localStorage.getItem('stamps') || '{}')[user] || [];
     const data = {
         user: user,
@@ -231,7 +185,7 @@ function exportJSON() {
 }
 
 function exportCSV() {
-    const user = localStorage.getItem("loggedInToken");
+    const user = localStorage.getItem("username");
     const stamps = JSON.parse(localStorage.getItem('stamps') || '{}')[user] || [];
     let csvContent = "data:text/csv;charset=utf-8,Ellenőrzőpont,Dátum\n";
     stamps.forEach(p => {
@@ -244,4 +198,26 @@ function exportCSV() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function exportPDF() {
+  const user = localStorage.getItem("username");
+  const stamps = JSON.parse(localStorage.getItem('stamps') || '{}')[user] || [];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.text(`Teljesítési igazolás`, 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Túrázó neve: ${user}`, 20, 30);
+
+  let y = 40;
+  stamps.forEach((p, index) => {
+    const line = `${index + 1}. ${p.name} – ${new Date(p.timestamp).toLocaleString()}`;
+    doc.text(line, 20, y);
+    y += 10;
+  });
+
+  doc.save(`${user.replace(' ', '_')}_teljesites.pdf`);
 }
