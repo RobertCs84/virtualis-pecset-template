@@ -1,5 +1,5 @@
 // Ide illessze be a Google Apps Script webalkalmazás URL-jét, miután telepítette.
-const GOOGLE_APPS_SCRIPT_URL = "IDE_ILLASSZA_BE_AZ_ON_URL-JÉT";
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwODVh8TYGP9b3CTqhNIzAugaR_uF8GesKxX2R3pAPxvxmXF0ziHAhYgK1IAxW42gVFjw/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthAndLoad();
