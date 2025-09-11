@@ -205,7 +205,7 @@ function loadCheckpoints() {
   });
 
   const allIds = checkpoints.map(p => p.id);
-  const user = localStorage.getItem('loggedInUser');
+  //const user = localStorage.getItem('loggedInUser');
   const stampedPointsNow = JSON.parse(localStorage.getItem('stamps') || '{}')[user] || [];
   const stampedIds = stampedPointsNow.map(p => p.id);
   const allStamped = allIds.every(id => stampedIds.includes(id));
