@@ -7,7 +7,7 @@
 
 /* ======= CONFIG: ide állítsd be az URL-ed és módot ======= */
 const AUTH_MODE = "post"; // "post" ajánlott, "get" visszahagyott opció
-const AUTH_URL = "https://script.google.com/macros/s/AKfycbzWwAS9ozcPHgeKkvS0bEvTlfRN13sdlA99f4Vo7ta1TevnZ7tRvZDQlFLYPZlCaWxnBQ/exec";
+const AUTH_URL = "https://script.google.com/macros/s/AKfycbz6vWvhkJpWFxlkYI6699cX6WVI6jSunVn7xYD87QWJRiZNYtwCdoWW9AuXIXa9lNxMvQ/exec";
 /* ======================================================= */
 
 /* A cache kulcs a localStorage-ben */
