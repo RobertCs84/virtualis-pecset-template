@@ -11,8 +11,7 @@
 
   <div id="login">
     <h2>Bejelentkezés</h2>
-    <form onsubmit="event.preventDefault(); login();"> 
-
+    <form id="loginForm" onsubmit="event.preventDefault(); login();">
       <label>
         Név:
         <input type="text" id="name" autocomplete="off" required />
@@ -21,12 +20,11 @@
       <label>
         Jelszó:
         <input type="password" id="password" required />
-        <span id="togglePw" style="cursor:pointer;">👁️</span>
+        <span id="togglePw" class="pw-toggle" title="Jelszó mutatása">👁️</span>
       </label>
-      <br><br>
-
-      <button type="submit">Belépés</button>
-      <p id="loginMsg" class="error"></p>
+      <div id="loginMsg" class="login-msg"></div>
+      <br>
+      <button type="submit" id="loginBtn">Belépés</button>
     </form>
   </div>
 
@@ -41,7 +39,6 @@
     </ul>
 
     <h3>Ellenőrzőpontok</h3>
-
     <h4>Franciavágás–Városlőd (Bakonyi Erdei Kisvasút)</h4>
     <div id="bakonyPoints"></div>
 
@@ -49,11 +46,16 @@
     <div id="balatonPoints"></div>
 
     <h3>Adatok mentése</h3>
-    <button onclick="exportJSON()">Megszerzett pecsétek letöltése JSON fájlban</button>
+    <button onclick="exportJSON()">Megszerzett pecsétek letöltése</button>
     <button onclick="exportCSV()">Letöltés CSV fájlban</button>
-    <button onclick="exportPDF()">Teljesítés igazolás letöltése PDF fájlban</button>
+    <button onclick="generatePDF()" id="pdfBtn" disabled>Teljesítésigazolás letöltése PDF</button>
+
+    <h3>Adatok visszatöltése</h3>
+    <input type="file" id="importFile" accept=".json" />
+    <button onclick="importJSON()">Visszatöltés</button>
+    <div id="status" class="status"></div>
   </div>
-  
-  <script src="virtual-tour.js"></script>
+
+  <script src="virtual-tour.js" defer></script>
 </body>
 </html>

@@ -1,29 +1,31 @@
-body {
-  font-family: sans-serif;
-  padding: 2rem;
-  background-color: #f2f2f2;
+:root{
+  --accent:#0b6b63;
+  --bg:#f6f7f8;
+  --card:#fff;
+  --danger:#c0392b;
+  --success:#2d9b3a;
 }
-h2 {
-  color: #005b4f;
+*{box-sizing:border-box}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  margin:0;
+  padding:1rem;
+  background:var(--bg);
+  color:#222;
 }
-.hidden {
-  display: none;
+h2,h3,h4{color:var(--accent);margin:0.5rem 0}
+.hidden{display:none}
+#login,#mainContent{
+  max-width:800px;margin:0 auto;padding:1rem;background:var(--card);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)
 }
-.checkpoint {
-  margin: 1rem 0;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-}
-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-.success {
-  color: green;
-}
-.error {
-  color: red;
-}
+label{display:block}
+input[type="text"],input[type="password"]{padding:0.6rem;border-radius:6px;border:1px solid #ccc;width:100%;max-width:320px}
+button{background:var(--accent);color:#fff;border:none;padding:0.6rem 1rem;border-radius:6px;cursor:pointer}
+button:disabled{opacity:0.6;cursor:not-allowed}
+.checkpoint{margin:0.6rem 0;padding:0.6rem;border-radius:6px;background:#fafafa;border:1px solid #eee}
+.status{margin:0.4rem 0}
+.success{color:var(--success)}
+.error{color:var(--danger)}
+.login-msg{min-height:1.6em;margin:0.5rem 0;color:#444}
+.pw-toggle{margin-left:8px;cursor:pointer}
+#status{margin-top:1rem;color:#333}
