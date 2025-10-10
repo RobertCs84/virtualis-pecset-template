@@ -1,31 +1,42 @@
 :root{
-  --accent:#0b6b63;
-  --bg:#f6f7f8;
-  --card:#fff;
-  --danger:#c0392b;
-  --success:#2d9b3a;
+  --accent: #0b6b63;
+  --bg: #f6f7f8;
+  --card: #fff;
+  --danger: #c0392b;
+  --success: #2d9b3a;
 }
 *{box-sizing:border-box}
 body{
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
   margin:0;
-  padding:1rem;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
   background:var(--bg);
   color:#222;
+  padding:1rem;
 }
-h2,h3,h4{color:var(--accent);margin:0.5rem 0}
-.hidden{display:none}
-#login,#mainContent{
-  max-width:800px;margin:0 auto;padding:1rem;background:var(--card);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)
+.container{max-width:900px;margin:0 auto}
+.card{
+  background:var(--card);
+  border-radius:10px;
+  padding:1rem;
+  box-shadow:0 8px 24px rgba(10,10,10,0.06);
+  margin:0.8rem 0;
 }
-label{display:block}
-input[type="text"],input[type="password"]{padding:0.6rem;border-radius:6px;border:1px solid #ccc;width:100%;max-width:320px}
-button{background:var(--accent);color:#fff;border:none;padding:0.6rem 1rem;border-radius:6px;cursor:pointer}
+label{display:block;margin:0.6rem 0;color:#333}
+input[type="text"],input[type="password"]{
+  width:100%;padding:0.6rem;border-radius:6px;border:1px solid #ddd;
+  font-size:1rem;
+}
+.pw-row{display:flex;gap:8px;align-items:center}
+.icon-btn{background:#ddd;border:none;padding:0.35rem 0.6rem;border-radius:6px;cursor:pointer}
+.actions{margin-top:0.6rem}
+button{background:var(--accent);color:#fff;padding:0.5rem 0.9rem;border-radius:6px;border:none;cursor:pointer}
 button:disabled{opacity:0.6;cursor:not-allowed}
+.hidden{display:none}
+.top{display:flex;align-items:center;justify-content:space-between}
 .checkpoint{margin:0.6rem 0;padding:0.6rem;border-radius:6px;background:#fafafa;border:1px solid #eee}
-.status{margin:0.4rem 0}
+.status{margin-top:1rem;color:#333}
 .success{color:var(--success)}
 .error{color:var(--danger)}
-.login-msg{min-height:1.6em;margin:0.5rem 0;color:#444}
-.pw-toggle{margin-left:8px;cursor:pointer}
-#status{margin-top:1rem;color:#333}
+.login-msg{min-height:1.4em;margin-top:0.4rem;color:#444}
+.row{display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
+.import-block{display:flex;gap:8px;align-items:center}

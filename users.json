@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Don Joe",
+    "salt": "0188f8fe3bde55078ccd7ed07a48543e",
+    "hash": "df8fb6b8498bd589b2621a08bf28dd60db1cca6ca5d8433cd2def2331e220c2b",
+    "method": "pbkdf2",
+    "iterations": 100000
+  },
+  {
+    "name": "Péter Pál",
+    "salt": "c6f6d0cab8d27d0cf63a67a47236758e",
+    "hash": "01d76b10680238f9c35038c899b04a79a4a88695273cc0e18c6cc7469604f76d",
+    "method": "pbkdf2",
+    "iterations": 100000
+  }
+]

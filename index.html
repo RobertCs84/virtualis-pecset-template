@@ -1,60 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Virtuális Túra Pecsételő</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Virtuális Túra - Pecsételő</title>
+
+  <!-- jsPDF CDN (GitHub Pages-en ez rendben szokott lenni) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <main class="container">
+    <section id="login" class="card">
+      <h2>Bejelentkezés</h2>
+      <form id="loginForm" onsubmit="event.preventDefault(); login();">
+        <label>Név
+          <input id="name" type="text" autocomplete="name" required />
+        </label>
 
-  <div id="login">
-    <h2>Bejelentkezés</h2>
-    <form id="loginForm" onsubmit="event.preventDefault(); login();">
-      <label>
-        Név:
-        <input type="text" id="name" autocomplete="off" required />
-      </label><br><br>
+        <label>Jelszó
+          <div class="pw-row">
+            <input id="password" type="password" autocomplete="current-password" required />
+            <button id="togglePw" type="button" class="icon-btn" title="Jelszó mutatása">👁️</button>
+          </div>
+        </label>
 
-      <label>
-        Jelszó:
-        <input type="password" id="password" required />
-        <span id="togglePw" class="pw-toggle" title="Jelszó mutatása">👁️</span>
-      </label>
-      <div id="loginMsg" class="login-msg"></div>
-      <br>
-      <button type="submit" id="loginBtn">Belépés</button>
-    </form>
-  </div>
+        <div id="loginMsg" class="login-msg"></div>
 
-  <div id="mainContent" class="hidden">
-    <h2>Üdv, <span id="usernameDisplay"></span>!</h2>
-    <button onclick="logout()">Kijelentkezés</button>
+        <div class="actions">
+          <button id="loginBtn" type="submit">Belépés</button>
+        </div>
+      </form>
+    </section>
 
-    <h3>GPX fájlok letöltése</h3>
-    <ul>
-      <li><a href="/wp-content/uploads/bakony-utvonal.gpx" download>Bakony túra GPX</a></li>
-      <li><a href="/wp-content/uploads/balaton-utvonal.gpx" download>Balaton-felvidék túra GPX</a></li>
-    </ul>
+    <section id="mainContent" class="card hidden">
+      <div class="top">
+        <h2>Üdv, <span id="usernameDisplay"></span>!</h2>
+        <button id="logoutBtn">Kijelentkezés</button>
+      </div>
 
-    <h3>Ellenőrzőpontok</h3>
-    <h4>Franciavágás–Városlőd (Bakonyi Erdei Kisvasút)</h4>
-    <div id="bakonyPoints"></div>
+      <h3>GPX fájlok letöltése</h3>
+      <ul>
+        <li><a href="/wp-content/uploads/bakony-utvonal.gpx" download>Bakony túra GPX</a></li>
+        <li><a href="/wp-content/uploads/balaton-utvonal.gpx" download>Balaton-felvidék túra GPX</a></li>
+      </ul>
 
-    <h4>Alsóörs–Veszprém (Balaton-felvidéki Vasút)</h4>
-    <div id="balatonPoints"></div>
+      <h3>Ellenőrzőpontok</h3>
+      <h4>Franciavágás–Városlőd (Bakony)</h4>
+      <div id="bakonyPoints"></div>
 
-    <h3>Adatok mentése</h3>
-    <button onclick="exportJSON()">Megszerzett pecsétek letöltése</button>
-    <button onclick="exportCSV()">Letöltés CSV fájlban</button>
-    <button onclick="generatePDF()" id="pdfBtn" disabled>Teljesítésigazolás letöltése PDF</button>
+      <h4>Alsóörs–Veszprém (Balaton)</h4>
+      <div id="balatonPoints"></div>
 
-    <h3>Adatok visszatöltése</h3>
-    <input type="file" id="importFile" accept=".json" />
-    <button onclick="importJSON()">Visszatöltés</button>
-    <div id="status" class="status"></div>
-  </div>
+      <div class="row">
+        <div>
+          <button id="exportJsonBtn">Megszerzett pecsétek letöltése (JSON)</button>
+          <button id="exportCsvBtn">Letöltés CSV-ben</button>
+          <button id="pdfBtn" disabled>Teljesítésigazolás letöltése (PDF)</button>
+        </div>
+        <div class="import-block">
+          <input id="importFile" type="file" accept=".json" />
+          <button id="importBtn">Visszatöltés</button>
+        </div>
+      </div>
+
+      <div id="status" class="status"></div>
+    </section>
+  </main>
 
   <script src="virtual-tour.js" defer></script>
 </body>
