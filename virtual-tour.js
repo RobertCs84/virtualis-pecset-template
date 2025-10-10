@@ -82,25 +82,35 @@ const checkpoints = [
 ];
 
 /* Betöltés után ellenőrzi, hogy már be van-e lépve */
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadUsers();
-
-  const togglePw = document.getElementById("togglePw");
+document.addEventListener("DOMContentLoaded", () => {
   const pwField = document.getElementById("password");
-  togglePw.addEventListener("click", () => {
-    pwField.type = pwField.type === "password" ? "text" : "password";
-    togglePw.textContent = pwField.type === "password" ? "👁️" : "🙈";
-  });
+  const togglePw = document.getElementById("togglePw");
 
+  if (togglePw && pwField) {
+    togglePw.addEventListener("click", () => {
+      if (pwField.type === "password") {
+        pwField.type = "text";
+        togglePw.classList.remove("fa-eye-slash");
+        togglePw.classList.add("fa-eye");
+      } else {
+        pwField.type = "password";
+        togglePw.classList.remove("fa-eye");
+        togglePw.classList.add("fa-eye-slash");
+      }
+    });
+  }
+
+  // ha már be van jelentkezve a user
   const logged = localStorage.getItem("loggedInUser");
   if (logged) {
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("mainContent").classList.remove("hidden");
+    document.getElementById("login")?.classList.add("hidden");
+    document.getElementById("mainContent")?.classList.remove("hidden");
     document.getElementById("usernameDisplay").textContent = logged;
     loadCheckpoints();
+    setStatus("Offline módban: a korábbi bejelentkezésed alapján pecsételhetsz.");
   }
 });
-
+  
 /* Ellenőrzőpont-megjelenítés */
 function loadCheckpoints() {
   const user = localStorage.getItem("loggedInUser");

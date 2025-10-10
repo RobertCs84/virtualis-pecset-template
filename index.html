@@ -2,28 +2,39 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Virtuális Túra Pecsételő</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
-<body>
+  <link rel="stylesheet" href="styles.css" />
 
-  <div id="login">
+  <!-- Font Awesome ikonok -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="virtual-tour.js" defer></script>
+</head>
+
+<body>
+  <div id="login" class="login-container">
     <h2>Bejelentkezés</h2>
     <form id="loginForm" onsubmit="event.preventDefault(); login();">
-      <label>
-        Név:
+      <div class="form-group">
+        <label for="name">Név:</label>
         <input type="text" id="name" autocomplete="off" required />
-      </label><br><br>
+      </div>
 
-      <label>
-        Jelszó:
+      <div class="form-group password-field">
+        <label for="password">Jelszó:</label>
         <input type="password" id="password" required />
-        <span id="togglePw" class="pw-toggle" title="Jelszó mutatása">👁️</span>
-      </label>
+        <i id="togglePw" class="fa-solid fa-eye-slash"></i>
+      </div>
+
       <div id="loginMsg" class="login-msg"></div>
-      <br>
+
       <button type="submit" id="loginBtn">Belépés</button>
     </form>
   </div>
@@ -55,7 +66,5 @@
     <button onclick="importJSON()">Visszatöltés</button>
     <div id="status" class="status"></div>
   </div>
-
-  <script src="virtual-tour.js" defer></script>
 </body>
 </html>
