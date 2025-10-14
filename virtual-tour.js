@@ -74,11 +74,21 @@ function logout() {
 /* Ellenőrzőpontok */
 const checkpoints = [
   { id: 1, name: "Városlőd", lat: 47.1594727, lon: 17.6710794, route: "Bakony" },
+  { id: 2, name: "OKT - Kisvasút nyomvonal találkozása", lat: 47.1742054, lon: 17.6677350, route: "Bakony" },
   { id: 2, name: "Szénpajtai-pihenő", lat: 47.1946432, lon: 17.6685077, route: "Bakony" },
-  { id: 3, name: "Királykapu (fűtőház)", lat: 47.2561136, lon: 17.6626225, route: "Bakony" },
-  { id: 4, name: "Természetvédelmi tábla", lat: 47.2836890, lon: 17.7061015, route: "Bakony" },
-  { id: 5, name: "Huszárokelőpuszta", lat: 47.3146886, lon: 17.6886906, route: "Bakony" },
-  { id: 6, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" }
+  { id: 3, name: "Pápavár alja - Piros - és + elágazás", lat:  47.2341698, lon: 17.6751480, route: "Bakony" },
+  { id: 4, name: "Királykapu (fűtőház)", lat: 47.2561136, lon: 17.6626225, route: "Bakony" },
+  { id: 5, name: "Kisvasút egy hídpillérje", lat: 47.2657482, lon: 17.6854304, route: "Bakony" },  
+  { id: 6, name: "Egykori Odvaskő megállóhely", lat: 47.2860120, lon: 17.7060150, route: "Bakony" },
+  { id: 7, name: "Huszárokelőpuszta", lat: 47.3146886, lon: 17.6886906, route: "Bakony" },
+  { id: 6, name: "Veszprém vasútállomás", lat: 47.1189646, lon: 17.9114044, route: "Balaton" }, 
+  { id: 7, name: "Haszkovó – Őrház utca", lat: 47.1036732, lon: 17.9201985, route: "Balaton" }, 
+  { id: 8, name: "Veszprém régi vasútállomás", lat: 47.0950814, lon: 17.9175577, route: "Balaton" }, 
+  { id: 9, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564, route: "Balaton" }, 
+  { id: 10, name: "Vödörvölgy – Zöld étterem", lat: 47.0362092, lon: 17.9799228, route: "Balaton" }, 
+  { id: 11, name: "Töltés utca – 375-ös gőzmozdony", lat: 47.0300097, lon: 18.0080322, route: "Balaton" }, 
+  { id: 12, name: "Káptalanfüred állomás", lat: 47.0103427, lon: 18.0041360, route: "Balaton" }, 
+  { id: 13, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" }
 ];
 
 /* Betöltés után ellenőrzi, hogy már be van-e lépve */
