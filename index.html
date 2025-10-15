@@ -1,70 +1,41 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virtuális Túra Pecsételő</title>
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Font Awesome ikonok -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
-
-  <!-- jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtuális Túra</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="virtual-tour.js" defer></script>
 </head>
-
 <body>
-  <div id="login" class="login-container">
+
+  <div id="login">
     <h2>Bejelentkezés</h2>
-    <form id="loginForm" onsubmit="event.preventDefault(); login();">
-      <div class="form-group">
-        <label for="name">Név:</label>
-        <input type="text" id="name" autocomplete="off" required />
-      </div>
-
-      <div class="form-group password-field">
-        <label for="password">Jelszó:</label>
-        <input type="password" id="password" required />
-        <i id="togglePw" class="fa-solid fa-eye-slash"></i>
-      </div>
-
-      <div id="loginMsg" class="login-msg"></div>
-
-      <button type="submit" id="loginBtn">Belépés</button>
-    </form>
+    <input type="text" id="name" placeholder="Név" required>
+    <div>
+      <input type="password" id="password" placeholder="Jelszó" required>
+      <i id="togglePw" class="fas fa-eye-slash pw-toggle" title="Jelszó mutatása/elrejtése"></i>
+    </div>
+    <div id="loginMsg" class="login-msg"></div>
+    <button onclick="login()">Belépés</button>
   </div>
 
   <div id="mainContent" class="hidden">
     <h2>Üdv, <span id="usernameDisplay"></span>!</h2>
     <button onclick="logout()">Kijelentkezés</button>
 
-    <h3>GPX fájlok letöltése</h3>
-    <ul>
-      <li><a href="/wp-content/uploads/bakony-utvonal.gpx" download>Bakony túra GPX</a></li>
-      <li><a href="/wp-content/uploads/balaton-utvonal.gpx" download>Balaton-felvidék túra GPX</a></li>
-    </ul>
-
-    <h3>Ellenőrzőpontok</h3>
-    <h4>Franciavágás–Városlőd (Bakonyi Erdei Kisvasút)</h4>
-    <div id="bakonyPoints"></div>
-
-    <h4>Alsóörs–Veszprém (Balaton-felvidéki Vasút)</h4>
-    <div id="balatonPoints"></div>
-
-    <h3>Adatok mentése</h3>
-    <button onclick="exportJSON()">Megszerzett pecsétek letöltése</button>
-    <button onclick="exportCSV()">Letöltés CSV fájlban</button>
-    <button onclick="generatePDF()" id="pdfBtn" disabled>Teljesítésigazolás letöltése PDF</button>
-
-    <h3>Adatok visszatöltése</h3>
-    <input type="file" id="importFile" accept=".json" />
-    <button onclick="importJSON()">Visszatöltés</button>
-    <div id="status" class="status"></div>
+    <div id="checkpointsContainer">
+      <div>
+        <h3>Bakony régió</h3>
+        <div id="bakonyPoints"></div>
+      </div>
+      <div>
+        <h3>Balaton régió</h3>
+        <div id="balatonPoints"></div>
+      </div>
+    </div>
   </div>
+
 </body>
 </html>
