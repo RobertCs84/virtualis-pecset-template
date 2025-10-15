@@ -12,5 +12,12 @@
     "hash": "01d76b10680238f9c35038c899b04a79a4a88695273cc0e18c6cc7469604f76d",
     "method": "pbkdf2",
     "iterations": 100000
+  },
+  {
+    "name": "Bóna József",
+    "salt": "2823f5fca16a8187ba6a7ac41c73b52c",
+    "hash": "7f77758083d81c682a9e3a2ae5c2fd1aebe9dee0d259d350855cecebfcac6037",
+    "method": "pbkdf2",
+    "iterations": 100000
   }
 ]
