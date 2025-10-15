@@ -41,20 +41,20 @@
 
     <div id="checkpointsContainer">
       <div>
-        <h3>Bakony régió</h3>
+        <h3>Városlőd - Franciavágás kisvasút</h3>
         <div id="bakonyPoints"></div>
       </div>
       <div>
-        <h3>Balaton régió</h3>
+        <h3>Veszprém - Alsóörs vasútvonal</h3>
         <div id="balatonPoints"></div>
       </div>
     </div>
 
     <div class="tools">
-      <button onclick="exportJSON()">📄 Exportálás (JSON)</button>
-      <button onclick="exportCSV()">🧾 Exportálás (CSV)</button>
+      <button onclick="exportJSON()">📄 Megszerzett pecsétek letöltése (JSON)</button>
+      <button onclick="exportCSV()">🧾 Megszerzett pecsétek exportálása (CSV)</button>
       <button onclick="generatePDF()">📘 Teljesítésigazolás (PDF)</button>
-      <label for="importFile" class="button">📥 Visszatöltés</label>
+      <label for="importFile" class="button">📥 Megszerzett pecsétek visszatöltése</label>
       <input type="file" id="importFile" accept=".json" onchange="importJSON()" style="display:none;">
     </div>
   </div>
