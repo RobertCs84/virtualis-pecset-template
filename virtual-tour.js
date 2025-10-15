@@ -55,7 +55,8 @@ const checkpoints = [
   { id: 10, name: "Veszprém régi vasútállomás", lat: 47.0950814, lon: 17.9175577, route: "Balaton" },
   { id: 11, name: "Meggyespuszta", lat: 47.0517992, lon: 17.9374564, route: "Balaton" },
   { id: 12, name: "Vödörvölgy – Zöld étterem", lat: 47.0362092, lon: 17.9799228, route: "Balaton" },
-  { id: 13, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" }
+  { id: 13, name: "Töltés utca – 375-ös gőzmozdony", lat: 47.0300097, lon: 18.0080322, route: "Balaton" },
+  { id: 14, name: "Alsóörs vasútállomás", lat: 46.9852998, lon: 17.9751434, route: "Balaton" }
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
