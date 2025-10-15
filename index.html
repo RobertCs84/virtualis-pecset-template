@@ -6,9 +6,15 @@
   <title>Virtuális Túra</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="virtual-tour.js" defer></script>
 </head>
 <body>
+
+  <header>
+    <i class="fas fa-mountain"></i>
+    Virtuális Túra Pecsételő
+  </header>
 
   <div id="login">
     <h2>Bejelentkezés</h2>
@@ -34,6 +40,14 @@
         <h3>Balaton régió</h3>
         <div id="balatonPoints"></div>
       </div>
+    </div>
+
+    <div class="tools">
+      <button onclick="exportJSON()">📄 Exportálás (JSON)</button>
+      <button onclick="exportCSV()">🧾 Exportálás (CSV)</button>
+      <button onclick="generatePDF()">📘 Teljesítésigazolás (PDF)</button>
+      <label for="importFile" class="button">📥 Visszatöltés</label>
+      <input type="file" id="importFile" accept=".json" onchange="importJSON()" style="display:none;">
     </div>
   </div>
 

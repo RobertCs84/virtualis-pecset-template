@@ -1,37 +1,64 @@
 :root {
   --accent: #001f3f; /* navy blue */
-  --bg: #f6f7f8;
+  --accent-light: #003366;
+  --bg: #f4f7fb;
   --card: #fff;
   --danger: #c0392b;
   --success: #007bff;
 }
 
+/* Globális beállítások */
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
   margin: 0;
-  padding: 1rem;
+  padding: 0;
   background: var(--bg);
   color: #222;
 }
 
 .hidden { display: none; }
 
-#login, #mainContent {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
-  background: var(--card);
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+/* === Fejléc / logó === */
+header {
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+header i {
+  font-size: 1.6rem;
+  color: #fff;
 }
 
-/* Középre igazított bejelentkezés */
+/* === Bejelentkezés === */
+#login, #mainContent {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: var(--card);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
 #login {
   text-align: center;
 }
+
 #login input {
   display: block;
-  margin: 0.5rem auto;
+  margin: 0.6rem auto;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 80%;
+  font-size: 1rem;
 }
 
 /* Gombok */
@@ -45,20 +72,14 @@ button {
   font-size: 1rem;
 }
 button:hover {
-  background: #003366;
+  background: var(--accent-light);
 }
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.login-msg {
-  min-height: 1.6em;
-  margin: 0.5rem 0;
-  color: #444;
-}
-
-/* Szem ikon */
+/* Jelszó szem ikon */
 .pw-toggle {
   margin-left: 8px;
   cursor: pointer;
@@ -67,11 +88,18 @@ button:disabled {
   vertical-align: middle;
 }
 
+/* Üzenetek */
+.login-msg {
+  min-height: 1.6em;
+  margin: 0.5rem 0;
+  color: #444;
+}
+
 /* Ellenőrzőpontok kétoszlopos elrendezés */
 #checkpointsContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 @media (max-width: 700px) {
@@ -90,3 +118,12 @@ button:disabled {
 
 .success { color: var(--success); }
 .error { color: var(--danger); }
+
+/* === Export/Import szekció === */
+.tools {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.tools button, .tools label {
+  margin: 0.4rem;
+}
