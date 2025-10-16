@@ -105,6 +105,15 @@ function loadCheckpoints() {
       <p class="status"></p>${status}`;
     (cp.route === "Bakony" ? bakonyDiv : balatonDiv).appendChild(div);
   });
+  // --- PDF gomb engedélyezés csak ha minden pecsét megvan ---
+const allIds = checkpoints.map(p => p.id);
+const userStamps = JSON.parse(localStorage.getItem("stamps") || "{}")[user] || [];
+const stampedIds = userStamps.map(p => p.id);
+const allStamped = allIds.every(id => stampedIds.includes(id));
+
+const pdfBtn = document.getElementById("pdfBtn");
+if (pdfBtn) pdfBtn.disabled = !allStamped;  
+  
 }
 
 /* Távolság / pecsét */

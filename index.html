@@ -53,7 +53,7 @@
     <div class="tools">
       <button onclick="exportJSON()">📄 Megszerzett pecsétek letöltése (JSON)</button>
       <button onclick="exportCSV()">🧾 Megszerzett pecsétek exportálása (CSV)</button>
-      <button onclick="generatePDF()">📘 Teljesítésigazolás (PDF)</button>
+      <button onclick="generatePDF()" id="pdfBtn" disabled>Teljesítésigazolás letöltése PDF</button>
       <label for="importFile" class="button">📥 Megszerzett pecsétek visszatöltése</label>
       <input type="file" id="importFile" accept=".json" onchange="importJSON()" style="display:none;">
     </div>
